@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  :root {
+    --sidebar-width: 260px;
+    --sidebar-collapsed-width: 68px;
+    --header-height: 64px;
+    color-scheme: light;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-linho-100 text-mata-900 font-body antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  /* Scrollbar orgânica */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-mata-200 rounded-organic-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-mata-300;
+  }
+
+  /* Seleção de texto */
+  ::selection {
+    @apply bg-mata-200 text-mata-900;
+  }
+
+  /* Foco acessível */
+  :focus-visible {
+    @apply outline-none ring-2 ring-mata-500 ring-offset-2 ring-offset-linho-100;
+  }
+
+  h1, h2, h3 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  /* === CARDS === */
+  .card {
+    @apply bg-white rounded-organic-lg shadow-organic border border-linho-200 p-5;
+  }
+  .card-flat {
+    @apply bg-linho-100 rounded-organic-lg border border-linho-200 p-5;
+  }
+
+  /* === BADGES / STATUS === */
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-organic-full text-xs font-medium;
+  }
+  .badge-disponivel {
+    @apply badge bg-mata-100 text-mata-700;
+  }
+  .badge-ocupada {
+    @apply badge bg-barro-100 text-barro-700;
+  }
+  .badge-reservada {
+    @apply badge bg-ambar-100 text-ambar-700;
+  }
+  .badge-manutencao {
+    @apply badge bg-cedro-100 text-cedro-600;
+  }
+  .badge-pendente {
+    @apply badge bg-ambar-100 text-ambar-800;
+  }
+  .badge-confirmada {
+    @apply badge bg-mata-100 text-mata-700;
+  }
+  .badge-checkin {
+    @apply badge bg-mata-700 text-white;
+  }
+  .badge-checkout {
+    @apply badge bg-cedro-100 text-cedro-700;
+  }
+  .badge-paga {
+    @apply badge bg-ambar-100 text-ambar-800;
+  }
+  .badge-cancelada {
+    @apply badge bg-red-100 text-red-700;
+  }
+
+  /* === BOTÕES === */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-medium rounded-organic transition-all duration-200 ease-organic cursor-pointer select-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-sm {
+    @apply btn px-3 py-1.5 text-xs;
+  }
+  .btn-md {
+    @apply btn px-4 py-2 text-sm;
+  }
+  .btn-lg {
+    @apply btn px-6 py-3 text-base;
+  }
+  .btn-primary {
+    @apply bg-mata-700 text-white hover:bg-mata-800 active:bg-mata-900 shadow-organic-sm focus-visible:ring-mata-500;
+  }
+  .btn-secondary {
+    @apply bg-mata-100 text-mata-800 hover:bg-mata-200 active:bg-mata-300 focus-visible:ring-mata-500;
+  }
+  .btn-danger {
+    @apply bg-barro-100 text-barro-700 hover:bg-barro-200 active:bg-barro-300 focus-visible:ring-barro-500;
+  }
+  .btn-ghost {
+    @apply bg-transparent text-mata-700 hover:bg-mata-50 active:bg-mata-100 focus-visible:ring-mata-500;
+  }
+  .btn-outline {
+    @apply border border-mata-300 text-mata-700 bg-transparent hover:bg-mata-50 active:bg-mata-100 focus-visible:ring-mata-500;
+  }
+
+  /* === INPUTS === */
+  .input {
+    @apply w-full px-3 py-2 bg-white border border-linho-300 rounded-organic text-sm text-mata-900 placeholder-cedro-400
+           focus:outline-none focus:ring-2 focus:ring-mata-500 focus:border-mata-500 focus:ring-offset-0
+           transition-all duration-200 ease-organic;
+  }
+  .input-sm {
+    @apply input py-1.5 text-xs;
+  }
+  .label {
+    @apply block text-xs font-medium text-cedro-600 mb-1 uppercase tracking-wide;
+  }
+
+  /* === SIDEBAR NAV === */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-organic text-sm font-medium transition-all duration-200 ease-organic cursor-pointer;
+  }
+  .nav-item-active {
+    @apply nav-item bg-mata-700 text-white shadow-organic-sm;
+  }
+  .nav-item-inactive {
+    @apply nav-item text-mata-200 hover:bg-mata-800 hover:text-white;
+  }
+
+  /* === TABELAS === */
+  .table-wrapper {
+    @apply w-full overflow-x-auto rounded-organic-lg border border-linho-200;
+  }
+  .table {
+    @apply w-full text-sm;
+  }
+  .table thead {
+    @apply bg-linho-100 border-b border-linho-200;
+  }
+  .table th {
+    @apply px-4 py-3 text-left text-xs font-semibold text-cedro-500 uppercase tracking-wide whitespace-nowrap;
+  }
+  .table td {
+    @apply px-4 py-3 text-mata-800 border-b border-linho-100 last-of-type:border-0;
+  }
+  .table tbody tr {
+    @apply hover:bg-linho-100 transition-colors duration-150;
+  }
+
+  /* === STATUS DOTS === */
+  .status-dot {
+    @apply inline-block w-2 h-2 rounded-full;
+  }
+  .dot-disponivel { @apply status-dot bg-mata-500; }
+  .dot-ocupada { @apply status-dot bg-barro-500; }
+  .dot-reservada { @apply status-dot bg-ambar-500; }
+  .dot-manutencao { @apply status-dot bg-cedro-400; }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Separador orgânico */
+  .divider {
+    @apply h-px bg-linho-200 my-4;
+  }
+
+  /* Glassmorphism leve (para overlays) */
+  .glass {
+    @apply bg-white/80 backdrop-blur-md border border-white/50;
+  }
+}
+
+/* === REACT BIG CALENDAR OVERRIDES === */
+.rbc-calendar {
+  @apply font-body text-mata-800;
+}
+.rbc-header {
+  @apply bg-linho-100 border-linho-200 text-xs font-semibold text-cedro-500 uppercase tracking-wide py-2;
+}
+.rbc-today {
+  @apply bg-mata-50 !important;
+}
+.rbc-event {
+  @apply rounded-md text-xs font-medium border-0 !important;
+}
+.rbc-toolbar button {
+  @apply rounded-organic text-sm font-medium text-mata-700 border border-linho-200 px-3 py-1.5 hover:bg-mata-50 transition-colors;
+}
+.rbc-toolbar button.rbc-active {
+  @apply bg-mata-700 text-white border-mata-700 !important;
+}
+.rbc-month-view, .rbc-time-view {
+  @apply border border-linho-200 rounded-organic-lg overflow-hidden;
+}
