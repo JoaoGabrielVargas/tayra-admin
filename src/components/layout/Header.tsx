@@ -55,16 +55,16 @@ export function Header({ onOpenMobileMenu }: { onOpenMobileMenu: () => void }) {
   };
 
   return (
-    <header className="sticky top-0 z-30 h-16 bg-white/90 backdrop-blur-md border-b border-linho-200 flex items-center px-4 md:px-6 gap-3 shadow-organic-sm">
+    <header className="sticky top-0 z-30 h-14 sm:h-16 bg-white/90 backdrop-blur-md border-b border-linho-200 flex items-center px-3 sm:px-4 md:px-6 gap-2 sm:gap-3 shadow-organic-sm min-w-0">
       <button
         onClick={onOpenMobileMenu}
-        className="md:hidden p-2 rounded-organic text-mata-800 hover:bg-linho-100"
+        className="md:hidden p-2 -ml-1 rounded-organic text-mata-800 hover:bg-linho-100 shrink-0"
         aria-label="Abrir menu"
       >
         <Menu size={20} />
       </button>
 
-      <h1 className="font-display text-lg md:text-xl font-semibold text-mata-900 flex-1 truncate">{pageTitle}</h1>
+      <h1 className="font-display text-base sm:text-lg md:text-xl font-semibold text-mata-900 flex-1 min-w-0 truncate">{pageTitle}</h1>
 
       {perm !== 'granted' && 'Notification' in window && (
         <button
@@ -91,7 +91,7 @@ export function Header({ onOpenMobileMenu }: { onOpenMobileMenu: () => void }) {
         </button>
 
         {notifOpen && (
-          <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-organic-lg shadow-organic-lg border border-linho-200 overflow-hidden animate-slide-up">
+          <div className="fixed sm:absolute inset-x-3 sm:inset-x-auto sm:right-0 top-16 sm:top-full sm:mt-2 sm:w-80 bg-white rounded-organic-lg shadow-organic-lg border border-linho-200 overflow-hidden animate-slide-up z-50">
             <div className="flex items-center justify-between px-4 py-3 border-b border-linho-200">
               <span className="text-sm font-semibold text-mata-900">Notificações</span>
               <button onClick={marcarTodasLidas} className="text-xs text-mata-600 hover:text-mata-800 flex items-center gap-1 transition-colors">

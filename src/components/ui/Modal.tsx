@@ -23,25 +23,25 @@ export function Modal({ open, onClose, title, children, footer, size='md' }: Mod
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-2 sm:p-4" onClick={onClose}>
       {/* Backdrop */}
       <div className="absolute inset-0 bg-mata-950/40 backdrop-blur-sm animate-fade-in" />
       {/* Panel */}
       <div
-        className={`relative bg-white rounded-organic-xl shadow-organic-xl w-full ${SIZES[size]} animate-slide-up flex flex-col max-h-[90vh]`}
+        className={`relative bg-white rounded-organic-xl shadow-organic-xl w-full ${SIZES[size]} animate-slide-up flex flex-col max-h-[92dvh] sm:max-h-[90vh] overflow-hidden`}
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-linho-200">
-          <h2 className="font-display text-lg font-semibold text-mata-900">{title}</h2>
-          <button onClick={onClose} className="p-1.5 rounded-organic text-cedro-400 hover:bg-linho-100 hover:text-mata-700 transition-colors">
+        <div className="flex items-center justify-between gap-3 px-4 py-3.5 sm:px-6 sm:py-4 border-b border-linho-200">
+          <h2 className="font-display text-base sm:text-lg font-semibold text-mata-900 min-w-0 truncate">{title}</h2>
+          <button onClick={onClose} className="p-1.5 rounded-organic text-cedro-400 hover:bg-linho-100 hover:text-mata-700 transition-colors shrink-0">
             <X size={18} />
           </button>
         </div>
         {/* Body */}
-        <div className="overflow-y-auto flex-1 px-6 py-5">{children}</div>
+        <div className="overflow-y-auto flex-1 px-4 py-4 sm:px-6 sm:py-5">{children}</div>
         {/* Footer */}
-        {footer && <div className="px-6 py-4 border-t border-linho-200 flex justify-end gap-3">{footer}</div>}
+        {footer && <div className="px-4 py-3 sm:px-6 sm:py-4 border-t border-linho-200 flex flex-wrap justify-end gap-2 sm:gap-3">{footer}</div>}
       </div>
     </div>
   );

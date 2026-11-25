@@ -24,7 +24,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex" style={{ background: 'linear-gradient(135deg, #1C3028 0%, #2D5240 60%, #4A7C5F 100%)' }}>
+    <div className="min-h-screen min-h-[100dvh] flex overflow-x-clip" style={{ background: 'linear-gradient(135deg, #1C3028 0%, #2D5240 60%, #4A7C5F 100%)' }}>
       {/* Left — Branding */}
       <div className="hidden lg:flex flex-1 flex-col justify-between p-12 relative overflow-hidden">
         {/* Decorative trees SVG */}
@@ -64,7 +64,7 @@ export default function Login() {
       </div>
 
       {/* Right — Form */}
-      <div className="flex-1 flex items-center justify-center p-6 bg-linho-100 lg:max-w-md w-full">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 bg-linho-100 lg:max-w-md w-full min-w-0">
         <div className="w-full max-w-sm">
           {/* Mobile logo */}
           <div className="flex items-center gap-2 mb-8 lg:hidden">

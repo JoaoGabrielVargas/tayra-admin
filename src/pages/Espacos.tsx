@@ -47,14 +47,14 @@ export default function Espacos() {
           const status = getStatus(oca.id);
           return (
             <Card key={oca.id} className="flex flex-col justify-between gap-4">
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-display text-lg font-semibold text-mata-900">{oca.nome}</h3>
+              <div className="min-w-0">
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <h3 className="font-display text-base sm:text-lg font-semibold text-mata-900 truncate">{oca.nome}</h3>
                   <StatusBadge status={status} />
                 </div>
-                <div className="flex items-center gap-4 text-xs text-cedro-600 mb-3">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-cedro-600 mb-3">
                   <span className="flex items-center gap-1"><Users size={13} /> Até {oca.capacidade} pessoas</span>
-                  <span className="font-mono font-semibold text-mata-800">{formatCurrency(oca.preco)}/noite</span>
+                  <span className="font-mono font-semibold text-mata-800 tabular-nums">{formatCurrency(oca.preco)}/noite</span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {oca.comodidades.map((c) => (
@@ -63,8 +63,8 @@ export default function Espacos() {
                 </div>
               </div>
 
-              <div className="flex gap-2 pt-3 border-t border-linho-200">
-                <Button variant="secondary" size="sm" className="flex-1" icon={<CalendarDays size={14} />} onClick={() => navigate('/reservas')}>
+              <div className="flex flex-wrap gap-2 pt-3 border-t border-linho-200">
+                <Button variant="secondary" size="sm" className="flex-1 min-w-[110px]" icon={<CalendarDays size={14} />} onClick={() => navigate('/reservas')}>
                   Reservas
                 </Button>
                 <Button variant="ghost" size="sm" onClick={() => toggleManutencao(oca.id)}>
@@ -79,35 +79,35 @@ export default function Espacos() {
       {/* Camping e Eventos */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card className="flex flex-col justify-between gap-4 bg-mata-50/60">
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <Tent size={20} className="text-mata-700" />
-                <h3 className="font-display text-lg font-semibold text-mata-900">Área de Camping</h3>
+          <div className="min-w-0">
+            <div className="flex items-start justify-between gap-2 mb-2">
+              <div className="flex items-center gap-2 min-w-0">
+                <Tent size={20} className="text-mata-700 shrink-0" />
+                <h3 className="font-display text-base sm:text-lg font-semibold text-mata-900 truncate">Área de Camping</h3>
               </div>
               <StatusBadge status={getStatus('camping')} />
             </div>
             <p className="text-xs text-cedro-600 mb-3">
               Gramado plano próximo às trilhas e banheiros coletivos com água quente. Capacidade para até 30 barracas.
             </p>
-            <p className="font-mono text-sm font-semibold text-mata-800">{formatCurrency(60)} / pessoa / diária</p>
+            <p className="font-mono text-sm font-semibold text-mata-800 tabular-nums">{formatCurrency(60)} / pessoa / diária</p>
           </div>
           <Button variant="secondary" size="sm" onClick={() => navigate('/reservas')}>Ver reservas de camping</Button>
         </Card>
 
         <Card className="flex flex-col justify-between gap-4 bg-ambar-50/40">
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <Sparkles size={20} className="text-barro-600" />
-                <h3 className="font-display text-lg font-semibold text-mata-900">Espaço Eventos & Trilhas</h3>
+          <div className="min-w-0">
+            <div className="flex items-start justify-between gap-2 mb-2">
+              <div className="flex items-center gap-2 min-w-0">
+                <Sparkles size={20} className="text-barro-600 shrink-0" />
+                <h3 className="font-display text-base sm:text-lg font-semibold text-mata-900 leading-snug">Espaço Eventos & Trilhas</h3>
               </div>
               <StatusBadge status={getStatus('evento')} />
             </div>
             <p className="text-xs text-cedro-600 mb-3">
               Salão rústico + gramado para casamentos, retiros, aniversários e ponto de partida das trilhas ecológicas.
             </p>
-            <p className="font-mono text-sm font-semibold text-mata-800">A partir de {formatCurrency(800)} / diária</p>
+            <p className="font-mono text-sm font-semibold text-mata-800 tabular-nums">A partir de {formatCurrency(800)} / diária</p>
           </div>
           <Button variant="secondary" size="sm" onClick={() => navigate('/eventos')}>Gerenciar eventos</Button>
         </Card>

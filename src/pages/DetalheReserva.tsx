@@ -70,18 +70,20 @@ export default function DetalheReserva() {
   const whatsappMsg = `Olá ${cliente?.nome?.split(' ')[0]}, sua reserva no Tayra Ecoparque está confirmada! ✅\n📅 Check-in: ${formatDate(reserva.dataEntrada)}\n📅 Check-out: ${formatDate(reserva.dataSaida)}\n🏕️ ${labelEspaco(reserva.espacoId)}\nQualquer dúvida, estamos à disposição! 🌿`;
 
   return (
-    <div className="max-w-4xl space-y-5">
+    <div className="max-w-4xl space-y-4 sm:space-y-5">
       {/* Header */}
-      <div className="flex items-center gap-3">
-        <Button variant="ghost" size="sm" onClick={() => navigate('/reservas')} icon={<ArrowLeft size={15}/>}>Voltar</Button>
-        <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <h2 className="font-display text-xl font-semibold text-mata-900">{labelEspaco(reserva.espacoId)}</h2>
-            <StatusBadge status={reserva.status} />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-start sm:items-center gap-2 sm:gap-3 min-w-0">
+          <Button variant="ghost" size="sm" className="shrink-0 -ml-2 sm:ml-0" onClick={() => navigate('/reservas')} icon={<ArrowLeft size={15}/>}>Voltar</Button>
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="font-display text-lg sm:text-xl font-semibold text-mata-900 truncate">{labelEspaco(reserva.espacoId)}</h2>
+              <StatusBadge status={reserva.status} />
+            </div>
+            <p className="text-xs text-cedro-400 truncate">Criada em {formatDateTime(reserva.criadaEm)} · {reserva.origem}</p>
           </div>
-          <p className="text-xs text-cedro-400">Criada em {formatDateTime(reserva.criadaEm)} · {reserva.origem}</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {cliente?.telefone && (
             <a href={gerarLinkWhatsApp(cliente.telefone, whatsappMsg)} target="_blank" rel="noreferrer">
               <Button variant="secondary" size="sm" icon={<MessageSquare size={15}/>}>WhatsApp</Button>
@@ -98,23 +100,23 @@ export default function DetalheReserva() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
         {/* Info principal */}
-        <div className="md:col-span-2 space-y-4">
+        <div className="md:col-span-2 space-y-4 min-w-0">
           <Card>
             <h3 className="font-display font-semibold text-mata-900 mb-3">Detalhes da Reserva</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div><p className="label">Check-in</p><p className="text-sm font-semibold text-mata-800">{formatDate(reserva.dataEntrada)}</p></div>
-              <div><p className="label">Check-out</p><p className="text-sm font-semibold text-mata-800">{formatDate(reserva.dataSaida)}</p></div>
-              <div><p className="label">Hóspedes</p><p className="text-sm text-mata-800">{reserva.numHospedes} pessoa(s)</p></div>
-              <div><p className="label">Origem</p><p className="text-sm text-mata-800 capitalize">{reserva.origem.replace('_',' ')}</p></div>
-              {reserva.observacoes && <div className="col-span-2"><p className="label">Observações</p><p className="text-sm text-mata-700">{reserva.observacoes}</p></div>}
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              <div className="min-w-0"><p className="label">Check-in</p><p className="text-sm font-semibold text-mata-800 tabular-nums">{formatDate(reserva.dataEntrada)}</p></div>
+              <div className="min-w-0"><p className="label">Check-out</p><p className="text-sm font-semibold text-mata-800 tabular-nums">{formatDate(reserva.dataSaida)}</p></div>
+              <div className="min-w-0"><p className="label">Hóspedes</p><p className="text-sm text-mata-800">{reserva.numHospedes} pessoa(s)</p></div>
+              <div className="min-w-0"><p className="label">Origem</p><p className="text-sm text-mata-800 capitalize truncate">{reserva.origem.replace('_',' ')}</p></div>
+              {reserva.observacoes && <div className="col-span-2 min-w-0"><p className="label">Observações</p><p className="text-sm text-mata-700 break-words">{reserva.observacoes}</p></div>}
             </div>
           </Card>
 
           {/* Comanda */}
           <Card>
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
               <h3 className="font-display font-semibold text-mata-900">Comanda</h3>
               {reserva.status === 'checkin' && (
                 <Button variant="secondary" size="sm" icon={<Plus size={14}/>} onClick={() => setComandaModal(true)}>Adicionar item</Button>
@@ -125,12 +127,12 @@ export default function DetalheReserva() {
             ) : (
               <div className="space-y-1">
                 {reserva.comanda.map(c => (
-                  <div key={c.id} className="flex items-center gap-2 py-1.5 border-b border-linho-100 last:border-0">
-                    <span className="flex-1 text-sm text-mata-800">{c.nome}</span>
-                    <span className="text-xs text-cedro-400 font-mono">{c.quantidade}x {formatCurrency(c.precoUnitario)}</span>
-                    <span className="text-sm font-semibold font-mono text-mata-900 w-20 text-right">{formatCurrency(c.total)}</span>
+                  <div key={c.id} className="flex flex-wrap sm:flex-nowrap items-center gap-x-2 gap-y-1 py-1.5 border-b border-linho-100 last:border-0 min-w-0">
+                    <span className="flex-1 min-w-0 text-sm text-mata-800 truncate">{c.nome}</span>
+                    <span className="text-xs text-cedro-400 font-mono shrink-0 tabular-nums">{c.quantidade}× {formatCurrency(c.precoUnitario)}</span>
+                    <span className="text-sm font-semibold font-mono text-mata-900 text-right shrink-0 tabular-nums">{formatCurrency(c.total)}</span>
                     {reserva.status === 'checkin' && (
-                      <button onClick={() => removeComandaItem(id!, c.id)} className="text-cedro-300 hover:text-barro-500 transition-colors"><Trash2 size={13}/></button>
+                      <button onClick={() => removeComandaItem(id!, c.id)} className="text-cedro-300 hover:text-barro-500 transition-colors shrink-0"><Trash2 size={13}/></button>
                     )}
                   </div>
                 ))}
@@ -140,7 +142,7 @@ export default function DetalheReserva() {
 
           {/* Serviços adicionais */}
           <Card>
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
               <h3 className="font-display font-semibold text-mata-900">Serviços Adicionais</h3>
               {['pendente','confirmada','checkin'].includes(reserva.status) && (
                 <Button variant="secondary" size="sm" icon={<Plus size={14}/>} onClick={() => setServicoModal(true)}>Adicionar</Button>
@@ -151,11 +153,11 @@ export default function DetalheReserva() {
             ) : (
               <div className="space-y-1">
                 {reserva.servicos.map(s => (
-                  <div key={s.id} className="flex items-center gap-2 py-1.5 border-b border-linho-100 last:border-0">
-                    <span className="flex-1 text-sm text-mata-800">{s.nome}</span>
-                    <span className="text-sm font-semibold font-mono text-mata-900">{formatCurrency(s.valor)}</span>
+                  <div key={s.id} className="flex items-center gap-2 py-1.5 border-b border-linho-100 last:border-0 min-w-0">
+                    <span className="flex-1 min-w-0 text-sm text-mata-800 truncate">{s.nome}</span>
+                    <span className="text-sm font-semibold font-mono text-mata-900 shrink-0 tabular-nums">{formatCurrency(s.valor)}</span>
                     {['pendente','confirmada','checkin'].includes(reserva.status) && (
-                      <button onClick={() => removeServico(id!, s.id)} className="text-cedro-300 hover:text-barro-500 transition-colors"><Trash2 size={13}/></button>
+                      <button onClick={() => removeServico(id!, s.id)} className="text-cedro-300 hover:text-barro-500 transition-colors shrink-0"><Trash2 size={13}/></button>
                     )}
                   </div>
                 ))}
@@ -165,20 +167,20 @@ export default function DetalheReserva() {
         </div>
 
         {/* Resumo financeiro */}
-        <div className="space-y-4">
+        <div className="space-y-4 min-w-0">
           <Card className="bg-mata-900 text-white border-0">
             <h3 className="font-display font-semibold text-white mb-4">Resumo</h3>
             <div className="space-y-2.5">
-              <div className="flex justify-between text-sm"><span className="text-mata-300">Hospedagem</span><span className="font-mono">{formatCurrency(reserva.valorHospedagem)}</span></div>
+              <div className="flex justify-between gap-3 text-sm min-w-0"><span className="text-mata-300 truncate">Hospedagem</span><span className="font-mono shrink-0 tabular-nums">{formatCurrency(reserva.valorHospedagem)}</span></div>
               {reserva.servicos.map(s => (
-                <div key={s.id} className="flex justify-between text-sm"><span className="text-mata-300">{s.nome}</span><span className="font-mono">{formatCurrency(s.valor)}</span></div>
+                <div key={s.id} className="flex justify-between gap-3 text-sm min-w-0"><span className="text-mata-300 truncate">{s.nome}</span><span className="font-mono shrink-0 tabular-nums">{formatCurrency(s.valor)}</span></div>
               ))}
               {reserva.comanda.map(c => (
-                <div key={c.id} className="flex justify-between text-sm"><span className="text-mata-300">{c.nome} ×{c.quantidade}</span><span className="font-mono">{formatCurrency(c.total)}</span></div>
+                <div key={c.id} className="flex justify-between gap-3 text-sm min-w-0"><span className="text-mata-300 truncate">{c.nome} ×{c.quantidade}</span><span className="font-mono shrink-0 tabular-nums">{formatCurrency(c.total)}</span></div>
               ))}
-              <div className="border-t border-mata-700 pt-2.5 flex justify-between font-semibold">
+              <div className="border-t border-mata-700 pt-2.5 flex justify-between items-baseline gap-3 font-semibold">
                 <span className="text-white">Total</span>
-                <span className="font-mono text-ambar-400 text-lg">{formatCurrency(reserva.valorTotal)}</span>
+                <span className="font-mono text-ambar-400 text-base sm:text-lg shrink-0 tabular-nums">{formatCurrency(reserva.valorTotal)}</span>
               </div>
             </div>
             {reserva.pagoEm && <p className="text-xs text-mata-400 mt-3">Pago em {formatDate(reserva.pagoEm)}</p>}
@@ -188,12 +190,12 @@ export default function DetalheReserva() {
           {cliente && (
             <Card>
               <h3 className="font-display font-semibold text-mata-900 mb-3">Cliente</h3>
-              <div className="space-y-2">
-                <p className="text-sm font-semibold text-mata-900">{cliente.nome}</p>
-                <a href={`tel:${cliente.telefone}`} className="flex items-center gap-1.5 text-sm text-mata-600 hover:text-mata-800">
-                  <Phone size={13}/>{cliente.telefone}
+              <div className="space-y-2 min-w-0">
+                <p className="text-sm font-semibold text-mata-900 break-words">{cliente.nome}</p>
+                <a href={`tel:${cliente.telefone}`} className="flex items-center gap-1.5 text-sm text-mata-600 hover:text-mata-800 break-all">
+                  <Phone size={13} className="shrink-0"/>{cliente.telefone}
                 </a>
-                {cliente.email && <p className="text-xs text-cedro-500">{cliente.email}</p>}
+                {cliente.email && <p className="text-xs text-cedro-500 break-all">{cliente.email}</p>}
                 {cliente.cidade && <p className="text-xs text-cedro-400">{cliente.cidade}, {cliente.estado}</p>}
               </div>
             </Card>

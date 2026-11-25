@@ -99,16 +99,16 @@ export default function ReservaPublica() {
 
   if (enviado) {
     return (
-      <div className="min-h-screen bg-linho-100 flex items-center justify-center p-4">
-        <Card className="max-w-md w-full text-center space-y-4 py-8">
+      <div className="min-h-screen min-h-[100dvh] bg-linho-100 flex items-center justify-center p-3 sm:p-4">
+        <Card className="max-w-md w-full text-center space-y-4 py-6 sm:py-8">
           <div className="w-16 h-16 bg-mata-100 text-mata-700 rounded-full flex items-center justify-center mx-auto">
             <CheckCircle2 size={34} />
           </div>
-          <h1 className="font-display text-2xl font-semibold text-mata-900">Solicitação recebida!</h1>
+          <h1 className="font-display text-xl sm:text-2xl font-semibold text-mata-900">Solicitação recebida!</h1>
           <p className="text-sm text-cedro-600">
             Sua pré-reserva no <strong>Tayra Ecoparque</strong> já apareceu automaticamente no painel da nossa equipe. Em breve entraremos em contato pelo WhatsApp para confirmar.
           </p>
-          <div className="bg-linho-100 rounded-organic p-3 text-xs text-mata-800 font-mono">
+          <div className="bg-linho-100 rounded-organic p-3 text-xs text-mata-800 font-mono break-words tabular-nums">
             {labelEspaco(isNaN(Number(form.espacoId)) ? form.espacoId : Number(form.espacoId))} · {noites} noite(s) · {formatCurrency(totalEstimado)}
           </div>
           <Button variant="secondary" onClick={() => { setEnviado(false); setForm({ ...form, dataSaida: '', observacoes: '' }); }}>
@@ -120,14 +120,14 @@ export default function ReservaPublica() {
   }
 
   return (
-    <div className="min-h-screen bg-linho-100 py-8 px-4">
-      <div className="max-w-xl mx-auto space-y-6">
+    <div className="min-h-screen min-h-[100dvh] bg-linho-100 py-6 sm:py-8 px-3 sm:px-4">
+      <div className="max-w-xl mx-auto space-y-5 sm:space-y-6">
         <div className="text-center space-y-2">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-mata-900 text-white rounded-organic-full text-xs font-medium">
             <Leaf size={14} className="text-ambar-400" /> Tayra Ecoparque
           </div>
-          <h1 className="font-display text-3xl font-semibold text-mata-900">Reserve sua estadia na mata</h1>
-          <p className="text-sm text-cedro-500">Escolha sua Oca ou Camping — sua reserva cai direto para nossa equipe.</p>
+          <h1 className="font-display text-2xl sm:text-3xl font-semibold text-mata-900">Reserve sua estadia na mata</h1>
+          <p className="text-xs sm:text-sm text-cedro-500">Escolha sua Oca ou Camping — sua reserva cai direto para nossa equipe.</p>
         </div>
 
         <Card>
@@ -177,12 +177,12 @@ export default function ReservaPublica() {
 
             <Textarea label="Alguma observação?" value={form.observacoes} onChange={(e) => setForm((f) => ({ ...f, observacoes: e.target.value }))} placeholder="Horário previsto de chegada, restrições alimentares..." />
 
-            <div className="bg-mata-900 text-white rounded-organic-lg p-4 flex items-center justify-between">
-              <div>
-                <p className="text-xs text-mata-300 flex items-center gap-1.5"><Calendar size={13} /> {noites} noite(s) · <Users size={13} /> {form.numHospedes} hóspede(s)</p>
+            <div className="bg-mata-900 text-white rounded-organic-lg p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="min-w-0">
+                <p className="text-xs text-mata-300 flex flex-wrap items-center gap-1.5 tabular-nums"><Calendar size={13} className="shrink-0" /> {noites} noite(s) · <Users size={13} className="shrink-0" /> {form.numHospedes} hóspede(s)</p>
                 <p className="text-xs text-mata-400 mt-0.5">Valor total estimado</p>
               </div>
-              <p className="font-mono text-2xl font-bold text-ambar-400">{formatCurrency(totalEstimado)}</p>
+              <p className="font-mono text-xl sm:text-2xl font-bold text-ambar-400 shrink-0 tabular-nums">{formatCurrency(totalEstimado)}</p>
             </div>
 
             <Button type="submit" size="lg" className="w-full">

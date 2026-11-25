@@ -37,16 +37,18 @@ const ICON_BG: Record<string, string> = {
 export function KpiCard({ titulo, valor, subtitulo, variacao, icon, color='verde' }: KpiCardProps) {
   const isPositive = variacao !== undefined && variacao >= 0;
   return (
-    <Card className="flex gap-4 items-start">
-      <div className={`p-3 rounded-organic ${ICON_BG[color]} shrink-0`}>{icon}</div>
-      <div className="flex-1 min-w-0">
-        <p className="text-xs font-semibold text-cedro-500 uppercase tracking-wide mb-0.5">{titulo}</p>
-        <p className="font-display text-2xl font-semibold text-mata-900 leading-none">{valor}</p>
+    <Card className="flex flex-col sm:flex-row gap-2 sm:gap-3.5 items-start p-3 sm:p-5 overflow-hidden">
+      <div className={`p-2 sm:p-3 rounded-organic ${ICON_BG[color]} shrink-0`}>{icon}</div>
+      <div className="flex-1 min-w-0 w-full">
+        <p className="text-[11px] sm:text-xs font-semibold text-cedro-500 uppercase tracking-wide mb-0.5 leading-tight truncate">{titulo}</p>
+        <p className="font-display text-[clamp(1rem,4.2vw,1.375rem)] sm:text-xl xl:text-2xl font-semibold text-mata-900 leading-tight break-words tabular-nums">
+          {valor}
+        </p>
         {(subtitulo || variacao !== undefined) && (
-          <div className="flex items-center gap-2 mt-1">
-            {subtitulo && <span className="text-xs text-cedro-500">{subtitulo}</span>}
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-1 min-w-0">
+            {subtitulo && <span className="text-[11px] sm:text-xs text-cedro-500 truncate max-w-full">{subtitulo}</span>}
             {variacao !== undefined && (
-              <span className={`text-xs font-medium ${isPositive ? 'text-mata-600' : 'text-barro-600'}`}>
+              <span className={`text-[11px] sm:text-xs font-medium whitespace-nowrap ${isPositive ? 'text-mata-600' : 'text-barro-600'}`}>
                 {isPositive ? '↑' : '↓'} {Math.abs(variacao).toFixed(1)}%
               </span>
             )}

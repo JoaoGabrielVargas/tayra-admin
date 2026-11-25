@@ -18,11 +18,14 @@
 
   html {
     @apply scroll-smooth;
+    overflow-x: clip;
   }
 
   body {
     @apply bg-linho-100 text-mata-900 font-body antialiased;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    overflow-x: clip;
+    max-width: 100%;
   }
 
   /* Scrollbar orgânica */
@@ -58,15 +61,15 @@
 @layer components {
   /* === CARDS === */
   .card {
-    @apply bg-white rounded-organic-lg shadow-organic border border-linho-200 p-5;
+    @apply bg-white rounded-organic-lg shadow-organic border border-linho-200 p-3.5 sm:p-5 min-w-0 max-w-full;
   }
   .card-flat {
-    @apply bg-linho-100 rounded-organic-lg border border-linho-200 p-5;
+    @apply bg-linho-100 rounded-organic-lg border border-linho-200 p-3.5 sm:p-5 min-w-0 max-w-full;
   }
 
   /* === BADGES / STATUS === */
   .badge {
-    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-organic-full text-xs font-medium;
+    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-organic-full text-xs font-medium whitespace-nowrap max-w-full shrink-0;
   }
   .badge-disponivel {
     @apply badge bg-mata-100 text-mata-700;
@@ -130,7 +133,7 @@
 
   /* === INPUTS === */
   .input {
-    @apply w-full px-3 py-2 bg-white border border-linho-300 rounded-organic text-sm text-mata-900 placeholder-cedro-400
+    @apply w-full min-w-0 max-w-full px-3 py-2 bg-white border border-linho-300 rounded-organic text-sm text-mata-900 placeholder-cedro-400
            focus:outline-none focus:ring-2 focus:ring-mata-500 focus:border-mata-500 focus:ring-offset-0
            transition-all duration-200 ease-organic;
   }
@@ -200,23 +203,35 @@
 
 /* === REACT BIG CALENDAR OVERRIDES === */
 .rbc-calendar {
-  @apply font-body text-mata-800;
+  @apply font-body text-mata-800 w-full max-w-full;
+}
+.rbc-toolbar {
+  @apply flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3 text-xs sm:text-sm !important;
+}
+.rbc-toolbar .rbc-toolbar-label {
+  @apply font-display font-semibold text-sm sm:text-base text-mata-900 py-1 !important;
+}
+.rbc-btn-group {
+  @apply flex flex-wrap justify-center !important;
 }
 .rbc-header {
-  @apply bg-linho-100 border-linho-200 text-xs font-semibold text-cedro-500 uppercase tracking-wide py-2;
+  @apply bg-linho-100 border-linho-200 text-[10px] sm:text-xs font-semibold text-cedro-500 uppercase tracking-wide py-1.5 sm:py-2 truncate;
 }
 .rbc-today {
   @apply bg-mata-50 !important;
 }
 .rbc-event {
-  @apply rounded-md text-xs font-medium border-0 !important;
+  @apply rounded-md text-[10px] sm:text-xs font-medium border-0 truncate !important;
 }
 .rbc-toolbar button {
-  @apply rounded-organic text-sm font-medium text-mata-700 border border-linho-200 px-3 py-1.5 hover:bg-mata-50 transition-colors;
+  @apply rounded-organic text-xs sm:text-sm font-medium text-mata-700 border border-linho-200 px-2.5 py-1 sm:px-3 sm:py-1.5 hover:bg-mata-50 transition-colors;
 }
 .rbc-toolbar button.rbc-active {
   @apply bg-mata-700 text-white border-mata-700 !important;
 }
 .rbc-month-view, .rbc-time-view {
   @apply border border-linho-200 rounded-organic-lg overflow-hidden;
+}
+.rbc-date-cell {
+  @apply text-[11px] sm:text-xs pr-1;
 }

@@ -135,9 +135,9 @@ export default function Estoque() {
   };
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4 sm:space-y-5">
       {/* KPIs */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-4">
         <KpiCard titulo="Itens cadastrados" valor={String(items.length)} icon={<Package size={20} />} color="verde" />
         <KpiCard
           titulo="Abaixo do mínimo"
@@ -146,154 +146,238 @@ export default function Estoque() {
           icon={<AlertTriangle size={20} />}
           color={abaixoMinimo.length > 0 ? 'barro' : 'verde'}
         />
-        <KpiCard titulo="Capital em estoque" valor={formatCurrency(valorEmEstoque)} subtitulo="Preço de custo" icon={<ArrowUpCircle size={20} />} color="ambar" />
+        <div className="col-span-2 sm:col-span-1">
+          <KpiCard titulo="Capital em estoque" valor={formatCurrency(valorEmEstoque)} subtitulo="Preço de custo" icon={<ArrowUpCircle size={20} />} color="ambar" />
+        </div>
       </div>
 
       {/* Filtros e ações */}
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="flex gap-1 p-1 bg-white rounded-organic border border-linho-200">
-          <button
-            onClick={() => setTab('produtos')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${tab === 'produtos' ? 'bg-mata-700 text-white' : 'text-cedro-500 hover:text-mata-800'}`}
-          >
-            <Package size={14} /> Produtos
-          </button>
-          <button
-            onClick={() => setTab('movimentacoes')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${tab === 'movimentacoes' ? 'bg-mata-700 text-white' : 'text-cedro-500 hover:text-mata-800'}`}
-          >
-            <History size={14} /> Movimentações
-          </button>
+      <div className="flex flex-col gap-2.5 sm:gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex gap-1 p-1 bg-white rounded-organic border border-linho-200 shrink-0">
+            <button
+              onClick={() => setTab('produtos')}
+              className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${tab === 'produtos' ? 'bg-mata-700 text-white' : 'text-cedro-500 hover:text-mata-800'}`}
+            >
+              <Package size={14} /> Produtos
+            </button>
+            <button
+              onClick={() => setTab('movimentacoes')}
+              className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${tab === 'movimentacoes' ? 'bg-mata-700 text-white' : 'text-cedro-500 hover:text-mata-800'}`}
+            >
+              <History size={14} /> Movimentações
+            </button>
+          </div>
+          <Button size="sm" className="sm:px-4 sm:py-2 sm:text-sm" onClick={() => setNovoModal(true)} icon={<Plus size={16} />}>Novo produto</Button>
         </div>
 
         {tab === 'produtos' && (
-          <>
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
             <Input
               placeholder="Buscar produto ou fornecedor..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               prefix={<Search size={14} />}
-              className="max-w-xs"
+              containerClassName="w-full sm:flex-1 sm:max-w-xs"
             />
-            <select className="input max-w-[170px] text-xs" value={catFilter} onChange={(e) => setCatFilter(e.target.value)}>
+            <select className="input w-full sm:w-44 text-xs" value={catFilter} onChange={(e) => setCatFilter(e.target.value)}>
               <option value="">Todas categorias</option>
               {Object.entries(CAT_LABEL).map(([k, v]) => (
                 <option key={k} value={k}>{v}</option>
               ))}
             </select>
-          </>
+          </div>
         )}
-
-        <div className="ml-auto">
-          <Button onClick={() => setNovoModal(true)} icon={<Plus size={16} />}>Novo produto</Button>
-        </div>
       </div>
 
       {/* Tabela Produtos */}
       {tab === 'produtos' ? (
-        <Card className="p-0 overflow-hidden">
-          <div className="table-wrapper border-0">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Produto</th>
-                  <th>Categoria</th>
-                  <th>Saldo</th>
-                  <th>Mínimo</th>
-                  <th>Custo / Venda</th>
-                  <th>Status</th>
-                  <th>Movimentar</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((item) => {
-                  const sem = getSemaforo(item);
-                  return (
-                    <tr key={item.id}>
-                      <td>
-                        <p className="font-medium text-mata-900">{item.nome}</p>
-                        {item.fornecedor && <p className="text-xs text-cedro-400">{item.fornecedor}</p>}
-                      </td>
-                      <td><Tag>{CAT_LABEL[item.categoria]}</Tag></td>
-                      <td className="font-mono font-semibold text-mata-900">
-                        {item.quantidade} <span className="text-xs text-cedro-400 font-normal">{item.unidade}</span>
-                      </td>
-                      <td className="font-mono text-xs text-cedro-500">{item.quantidadeMinima} {item.unidade}</td>
-                      <td className="font-mono text-xs">
-                        <span className="text-cedro-500">{formatCurrency(item.precoCusto)}</span>
-                        {' / '}
-                        <span className="text-mata-700 font-semibold">{formatCurrency(item.precoVenda)}</span>
-                      </td>
-                      <td>
-                        <Tag color={sem.color}>
-                          <span className={`w-1.5 h-1.5 rounded-full ${sem.dot}`} />
-                          {sem.label}
-                        </Tag>
-                      </td>
-                      <td>
-                        <div className="flex gap-1.5">
-                          <Button
-                            variant="secondary"
-                            size="sm"
-                            icon={<ArrowUpCircle size={13} />}
-                            onClick={() => { setMovModal({ item, tipo: 'entrada' }); setMovMotivo('compra'); }}
-                          >
-                            Entrada
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            icon={<ArrowDownCircle size={13} />}
-                            disabled={item.quantidade <= 0}
-                            onClick={() => { setMovModal({ item, tipo: 'saida' }); setMovMotivo('venda'); }}
-                          >
-                            Saída
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+        <>
+          <div className="md:hidden space-y-2.5">
+            {filtered.map((item) => {
+              const sem = getSemaforo(item);
+              return (
+                <Card key={item.id} className="space-y-3">
+                  <div className="flex items-start justify-between gap-2 min-w-0">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-sm text-mata-900 truncate">{item.nome}</p>
+                      {item.fornecedor && <p className="text-xs text-cedro-400 truncate">{item.fornecedor}</p>}
+                    </div>
+                    <Tag color={sem.color}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${sem.dot}`} />
+                      {sem.label}
+                    </Tag>
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+                    <Tag>{CAT_LABEL[item.categoria]}</Tag>
+                    <div className="flex items-center gap-3 font-mono tabular-nums">
+                      <span className="font-semibold text-mata-900">
+                        {item.quantidade} {item.unidade}
+                      </span>
+                      <span className="text-cedro-400">mín. {item.quantidadeMinima}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between gap-2 pt-2 border-t border-linho-100">
+                    <div className="font-mono text-xs tabular-nums">
+                      <span className="text-cedro-500">{formatCurrency(item.precoCusto)}</span>
+                      {' / '}
+                      <span className="text-mata-700 font-semibold">{formatCurrency(item.precoVenda)}</span>
+                    </div>
+                    <div className="flex gap-1.5 shrink-0">
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        icon={<ArrowUpCircle size={13} />}
+                        onClick={() => { setMovModal({ item, tipo: 'entrada' }); setMovMotivo('compra'); }}
+                      >
+                        Entrada
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        icon={<ArrowDownCircle size={13} />}
+                        disabled={item.quantidade <= 0}
+                        onClick={() => { setMovModal({ item, tipo: 'saida' }); setMovMotivo('venda'); }}
+                      >
+                        Saída
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              );
+            })}
           </div>
-        </Card>
+
+          <Card className="hidden md:block p-0 overflow-hidden">
+            <div className="table-wrapper border-0">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Produto</th>
+                    <th>Categoria</th>
+                    <th>Saldo</th>
+                    <th>Mínimo</th>
+                    <th>Custo / Venda</th>
+                    <th>Status</th>
+                    <th>Movimentar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((item) => {
+                    const sem = getSemaforo(item);
+                    return (
+                      <tr key={item.id}>
+                        <td>
+                          <p className="font-medium text-mata-900">{item.nome}</p>
+                          {item.fornecedor && <p className="text-xs text-cedro-400">{item.fornecedor}</p>}
+                        </td>
+                        <td><Tag>{CAT_LABEL[item.categoria]}</Tag></td>
+                        <td className="font-mono font-semibold text-mata-900 whitespace-nowrap tabular-nums">
+                          {item.quantidade} <span className="text-xs text-cedro-400 font-normal">{item.unidade}</span>
+                        </td>
+                        <td className="font-mono text-xs text-cedro-500 whitespace-nowrap tabular-nums">{item.quantidadeMinima} {item.unidade}</td>
+                        <td className="font-mono text-xs whitespace-nowrap tabular-nums">
+                          <span className="text-cedro-500">{formatCurrency(item.precoCusto)}</span>
+                          {' / '}
+                          <span className="text-mata-700 font-semibold">{formatCurrency(item.precoVenda)}</span>
+                        </td>
+                        <td>
+                          <Tag color={sem.color}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${sem.dot}`} />
+                            {sem.label}
+                          </Tag>
+                        </td>
+                        <td>
+                          <div className="flex gap-1.5">
+                            <Button
+                              variant="secondary"
+                              size="sm"
+                              icon={<ArrowUpCircle size={13} />}
+                              onClick={() => { setMovModal({ item, tipo: 'entrada' }); setMovMotivo('compra'); }}
+                            >
+                              Entrada
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              icon={<ArrowDownCircle size={13} />}
+                              disabled={item.quantidade <= 0}
+                              onClick={() => { setMovModal({ item, tipo: 'saida' }); setMovMotivo('venda'); }}
+                            >
+                              Saída
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </>
       ) : (
-        <Card className="p-0 overflow-hidden">
-          <div className="table-wrapper border-0">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Data</th>
-                  <th>Produto</th>
-                  <th>Tipo</th>
-                  <th>Qtd</th>
-                  <th>Motivo</th>
-                  <th>Valor</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[...movimentacoes].reverse().map((m) => {
-                  const prod = items.find((i) => i.id === m.itemEstoqueId);
-                  return (
-                    <tr key={m.id}>
-                      <td className="font-mono text-xs">{formatDate(m.data)}</td>
-                      <td className="font-medium text-mata-900">{prod?.nome || 'Item removido'}</td>
-                      <td>
-                        <Tag color={m.tipo === 'entrada' ? 'verde' : 'barro'}>
-                          {m.tipo === 'entrada' ? 'Entrada' : 'Saída'}
-                        </Tag>
-                      </td>
-                      <td className="font-mono font-semibold">{m.quantidade} {prod?.unidade}</td>
-                      <td className="capitalize text-xs text-cedro-600">{m.motivo}</td>
-                      <td className="font-mono text-xs">{m.valor ? formatCurrency(m.valor) : '—'}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+        <>
+          <div className="md:hidden space-y-2.5">
+            {[...movimentacoes].reverse().map((m) => {
+              const prod = items.find((i) => i.id === m.itemEstoqueId);
+              return (
+                <Card key={m.id} className="space-y-2">
+                  <div className="flex items-start justify-between gap-2 min-w-0">
+                    <p className="font-medium text-sm text-mata-900 truncate flex-1">{prod?.nome || 'Item removido'}</p>
+                    <Tag color={m.tipo === 'entrada' ? 'verde' : 'barro'}>
+                      {m.tipo === 'entrada' ? 'Entrada' : 'Saída'}
+                    </Tag>
+                  </div>
+                  <div className="flex items-center justify-between gap-2 text-xs text-cedro-500">
+                    <span className="font-mono tabular-nums">{formatDate(m.data)} · <span className="capitalize">{m.motivo}</span></span>
+                    <span className="font-mono font-semibold text-mata-900 shrink-0 tabular-nums">
+                      {m.quantidade} {prod?.unidade} {m.valor ? `· ${formatCurrency(m.valor)}` : ''}
+                    </span>
+                  </div>
+                </Card>
+              );
+            })}
           </div>
-        </Card>
+
+          <Card className="hidden md:block p-0 overflow-hidden">
+            <div className="table-wrapper border-0">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Produto</th>
+                    <th>Tipo</th>
+                    <th>Qtd</th>
+                    <th>Motivo</th>
+                    <th>Valor</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...movimentacoes].reverse().map((m) => {
+                    const prod = items.find((i) => i.id === m.itemEstoqueId);
+                    return (
+                      <tr key={m.id}>
+                        <td className="font-mono text-xs whitespace-nowrap">{formatDate(m.data)}</td>
+                        <td className="font-medium text-mata-900">{prod?.nome || 'Item removido'}</td>
+                        <td>
+                          <Tag color={m.tipo === 'entrada' ? 'verde' : 'barro'}>
+                            {m.tipo === 'entrada' ? 'Entrada' : 'Saída'}
+                          </Tag>
+                        </td>
+                        <td className="font-mono font-semibold whitespace-nowrap tabular-nums">{m.quantidade} {prod?.unidade}</td>
+                        <td className="capitalize text-xs text-cedro-600">{m.motivo}</td>
+                        <td className="font-mono text-xs whitespace-nowrap tabular-nums">{m.valor ? formatCurrency(m.valor) : '—'}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </>
       )}
 
       {/* Modal Novo Produto */}
@@ -308,8 +392,8 @@ export default function Estoque() {
           </>
         }
       >
-        <div className="grid grid-cols-2 gap-3">
-          <div className="col-span-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="sm:col-span-2">
             <Input label="Nome do produto *" value={form.nome} onChange={(e) => setForm((f) => ({ ...f, nome: e.target.value }))} placeholder="Ex: Água de Coco 330ml" />
           </div>
           <Select
@@ -323,7 +407,7 @@ export default function Estoque() {
           <Input label="Estoque mínimo (alerta)" type="number" min="0" value={form.quantidadeMinima} onChange={(e) => setForm((f) => ({ ...f, quantidadeMinima: e.target.value }))} />
           <Input label="Preço de custo (R$)" type="number" min="0" step="0.01" value={form.precoCusto} onChange={(e) => setForm((f) => ({ ...f, precoCusto: e.target.value }))} />
           <Input label="Preço de venda comanda (R$)" type="number" min="0" step="0.01" value={form.precoVenda} onChange={(e) => setForm((f) => ({ ...f, precoVenda: e.target.value }))} />
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <Input label="Fornecedor" value={form.fornecedor} onChange={(e) => setForm((f) => ({ ...f, fornecedor: e.target.value }))} placeholder="Opcional" />
           </div>
         </div>

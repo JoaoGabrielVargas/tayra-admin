@@ -140,21 +140,31 @@ export function OcaMap({ ocas, onOcaClick, selected }: OcaMapProps) {
         {tooltip && (() => {
           const oca = getOca(tooltip.id);
           if (!oca) return null;
-          const tx = tooltip.x > 400 ? tooltip.x - 130 : tooltip.x - 10;
-          const ty = tooltip.y > 280 ? tooltip.y - 90 : tooltip.y + 36;
+          const boxW = 172;
+          const boxH = oca.checkOut ? 72 : 58;
+          const tx = Math.max(10, Math.min(600 - boxW - 10, tooltip.x > 380 ? tooltip.x - boxW + 10 : tooltip.x - 15));
+          const ty = Math.max(10, Math.min(420 - boxH - 10, tooltip.y > 280 ? tooltip.y - boxH - 16 : tooltip.y + 34));
+          const statusText = oca.status === 'ocupada'
+            ? (oca.clienteNome || 'Ocupada')
+            : oca.status === 'reservada'
+              ? 'Reservada'
+              : oca.status === 'manutencao'
+                ? 'Manutenção'
+                : 'Disponível';
+          const statusClipped = statusText.length > 22 ? statusText.slice(0, 21) + '…' : statusText;
           return (
-            <g>
-              <rect x={tx} y={ty} width={130} height={70} rx="8" ry="8"
+            <g className="pointer-events-none">
+              <rect x={tx} y={ty} width={boxW} height={boxH} rx="8" ry="8"
                 fill="white" stroke="#A8C9B5" strokeWidth="1" style={{ filter: 'drop-shadow(0 4px 8px #1C302820)' }} />
-              <text x={tx+10} y={ty+16} fontSize="10" fontWeight="700" fill="#1C3028" fontFamily="Inter">Oca {oca.id}</text>
-              <text x={tx+10} y={ty+30} fontSize="9" fill="#736B60" fontFamily="Inter">
-                {oca.status === 'ocupada' ? (oca.clienteNome || 'Ocupada') : oca.status === 'reservada' ? 'Reservada' : oca.status === 'manutencao' ? 'Manutenção' : 'Disponível'}
+              <text x={tx+10} y={ty+17} fontSize="10" fontWeight="700" fill="#1C3028" fontFamily="Inter">Oca {oca.id}</text>
+              <text x={tx+10} y={ty+31} fontSize="9" fill="#736B60" fontFamily="Inter">
+                {statusClipped}
               </text>
-              <text x={tx+10} y={ty+44} fontSize="9" fill="#736B60" fontFamily="Inter">
-                {oca.capacidade} hóspedes · {formatCurrency(oca.precoPorNoite)}/noite
+              <text x={tx+10} y={ty+45} fontSize="8.5" fill="#736B60" fontFamily="Inter">
+                {oca.capacidade} hósp. · {formatCurrency(oca.precoPorNoite)}/noite
               </text>
               {oca.checkOut && (
-                <text x={tx+10} y={ty+58} fontSize="9" fill="#C87D55" fontFamily="Inter">
+                <text x={tx+10} y={ty+59} fontSize="8.5" fill="#C87D55" fontFamily="Inter">
                   Saída: {oca.checkOut}
                 </text>
               )}
